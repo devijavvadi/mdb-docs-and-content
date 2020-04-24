@@ -28,108 +28,39 @@
   </h2>
 
   <!-- Live preview-->
-  <div class="row">
-    <div class="col-md-6">
-      <div class="md-form">
-        <input
-          placeholder="Selected time"
-          type="text"
-          id="input_starttime"
-          class="form-control timepicker"
-        />
-        <label for="input_starttime">Light version, 12hours</label>
-      </div>
-    </div>
+  <a href="https://ng-demo.mdbootstrap.com/forms/timepicker" target="_blank"
+    class="btn btn-primary waves-effect waves-light" role="button">
+    Live example
+    <i class="far fa-eye ml-2"></i>
+  </a>
 
-    <div class="col-md-6">
-      <div class="md-form">
-        <input
-          placeholder="Selected time"
-          type="text"
-          id="input_endtime"
-          class="form-control timepicker"
-        />
-        <label for="input_starttime">Dark version, 24 hours</label>
-      </div>
-    </div>
-  </div>
   <!-- /.Live preview-->
 
   <!--Section: Code-->
   <section>
     <mdbsnippet>
       <code data-lang="html" data-name="HTML">
-        <mdb-time-picker
-          [buttonLabel]="'Done'"
-          [twelvehour]="true"
-          [darktheme]="false"
-          [placeholder]="'Selected time'"
-          [label]="'Light version, 12hours'"
-          [showClock]="true"
-          [ngModel]="lightClock"
-        ></mdb-time-picker>
-
-        <mdb-time-picker
-          [buttonLabel]="'Done'"
-          [twelvehour]="false"
-          [darktheme]="true"
-          [placeholder]="'Selected time'"
-          [label]="'Dark version, 24hours'"
-          [ngModel]="darkClock"
-        ></mdb-time-picker>
+        <div class="md-form">
+          <input
+            mdbInput
+            type="text"
+            id="form1"
+            class="form-control"
+            [mdbTimePicker]="timepicker"
+          />
+          <label for="form1">Example label</label>
+          <mdb-timepicker-toggle
+            [mdbTimePickerToggle]="timepicker"
+          ></mdb-timepicker-toggle>
+          <mdb-timepicker #timepicker></mdb-timepicker>
+        </div>
+        
       </code>
     </mdbsnippet>
   </section>
   <!--/Section: Code-->
 </section>
 <!-- SECTION-->
-
-<hr class="my-5" />
-
-<!--Section: Disabled-->
-<section id="disabled">
-  <h2 class="section-heading">
-    Disabled time picker
-    <a
-      href="https://mdbootstrap.com/products/angular-ui-kit/"
-      target="_blank"
-      class="btn btn-danger btn-sm btn-md"
-      role="button"
-      >MDB Pro component <i class="far fa-gem ml-1"></i>
-    </a>
-  </h2>
-
-  <!--Section: Code-->
-  <section>
-    <mdbsnippet>
-      <code data-lang="html" data-name="HTML">
-        <div class="row">
-          <div class="col-md-6 mx-auto my-5">
-            <form [formGroup]="datePickerForm">
-              <mdb-date-picker
-                name="mydate"
-                [options]="myDatePickerOptions"
-                [placeholder]="'Selected date'"
-                formControlName="datePickerControl"
-                required
-              ></mdb-date-picker>
-            </form>
-          </div>
-          <div class="col-md-6 mx-auto my-5">
-            <mdb-error *ngIf="input.invalid && (input.dirty || input.touched)"
-              >Input invalid</mdb-error
-            >
-            <mdb-success *ngIf="input.valid && (input.dirty || input.touched)"
-              >Input valid</mdb-success
-            >
-          </div>
-        </div>
-      </code>
-    </mdbsnippet>
-  </section>
-  <!--/Section: Code-->
-</section>
-<!--/Section: Disabled-->
 
 <hr class="my-5" />
 
@@ -147,42 +78,47 @@
   <section>
     <mdbsnippet>
       <code data-lang="html" data-name="HTML">
-        <div class="row">
-            <div class="col-md-6 mx-auto my-5">
-                <mdb-time-picker
-                  #timePicker
-                  [buttonLabel]="'Done'"
-                  [twelvehour]="false"
-                  [darktheme]="true"
-                  [placeholder]="'Selected time'"
-                  [label]="'Dark version, 24hours'"
-                  [(ngModel)]="darkClock"
-                  #model="ngModel"
-                  required
-                ></mdb-time-picker>
-            </div>
-             <div class="col-md-6 mx-auto my-5">
-             <div *ngIf="model">
-               <mdb-error *ngIf="model.errors?.required"
-                    >Input invalid</mdb-error
-               >
-               <mdb-success *ngIf="!model.errors">Input valid</mdb-success>
-            </div>
+        <form [formGroup]="validatingForm">
+          <div class="md-form">
+            <input
+              mdbValidate
+              mdbInput
+              type="text"
+              id="form1"
+              class="form-control"
+              [mdbTimePicker]="timepicker"
+              formControlName="required"
+            />
+            <label for="form1">Example label</label>
+            <mdb-timepicker-toggle
+              [mdbTimePickerToggle]="timepicker"
+            ></mdb-timepicker-toggle>
+            <mdb-timepicker #timepicker></mdb-timepicker>
+            <mdb-error *ngIf="input.invalid && (input.dirty || input.touched)">Input invalid</mdb-error>
+            <mdb-success *ngIf="input.valid && (input.dirty || input.touched)">Input valid</mdb-success>
           </div>
-        </div>
+        </form>
       </code>
-
       <code data-lang="js" data-name="TS">
-          import { ClockPickerComponent } from 'yourpath';
+        import { FormGroup, FormControl, Validators } from '@angular/forms';
+        import { Component, OnInit } from '@angular/core';
 
-          @ViewChild('timePicker', { static: true }) timePicker: ClockPickerComponent;
-          
-          darkClock: any;
-          
-          onClear() {
-            this.timePicker.clearTimeInput();
-            this.darkClock = null;
+        @Component({
+        selector: 'validators-component-example',
+        templateUrl: 'validators-example.html',
+        })
+        export class ValidatorsComponent implements OnInit {
+
+          validatingForm: FormGroup;
+
+          ngOnInit() {
+            this.validatingForm = new FormGroup({
+              required: new FormControl(null, Validators.required)
+            });
           }
+
+          get input() { return this.validatingForm.get('required'); }
+        }
       </code>
     </mdbsnippet>
   </section>
@@ -226,105 +162,3 @@
   <!--/Section: Code-->
 </section>
 <!--/Section: default date picker -->
-
-<!--Section: date time picker -->
-<section id="date-time-picker">
-
-  <!--Title-->
-  <h2 class="section-heading mb-4">
-    Date and Time Picker
-  </h2>
-
-  <!-- Description -->
-  <p>
-    You can use <em>Time Picker</em> and <em>Date Picker</em> together as a one component.
-    If you want to do this, you have to use input with <code>.date-time</code> class. You have to use also <code>data-open="DatePickerID"</code> HTML data-* Attribute and <code>.time-date-ghost</code> class.
-  </p>
-
-  <!--Section: Live preview-->
-  <section class="section-preview">
-
-    <div class="md-form mx-5 my-5">
-      <input placeholder="Date and Time" type="text" data-open="picker2" class="form-control date-time picker-opener">
-      <input placeholder="Selected date" type="text" id="picker2"  class="form-control time-date-ghost">
-      <input placeholder="Selected time" data-open="picker2" type="text" class="form-control timepicker time-date-ghost">
-    </div>
-
-  </section>
-  <!--Section: Live preview-->
-
-  <!--Section: Code-->
-  <section>
-    <mdbsnippet>
-      <code data-lang="html" data-name="HTML">
-        <div class="md-form mdb-date-time">
-          <input
-            (focus)="this.datePicker.openBtnClicked()"
-            #input
-            class="form-control date-time picker-opener"
-            data-open="picker2"
-            placeholder="Date and Time"
-            type="text"
-          />
-          <mdb-date-picker
-            (dateChanged)="onDateChange($event)"
-            [options]="myDatePickerOptions"
-            #datePicker
-          ></mdb-date-picker>
-          <mdb-time-picker
-            (timeChanged)="onTimeChange($event)"
-            [buttonLabel]="'Done'"
-            [twelvehour]="false"
-            #timePicker
-          ></mdb-time-picker>
-        </div>
-      </code>
-
-      <code data-lang="css" data-name="SCSS">
-        .mdb-date-time {
-          mdb-date-picker::ng-deep .mydp,
-          mdb-time-picker::ng-deep .tp {
-            &,
-            input,
-            .md-form {
-              height: 0;
-              width: 0;
-            }
-          }
-        }
-      </code>
-
-      <code data-lang="js" data-name="TS">
-        import { Component, ViewChild, ElementRef } from '@angular/core';
-        import { IMyOptions, MDBDatePickerComponent, ClockPickerComponent } from 'ng-uikit-pro-standard';
-        
-        @Component({
-          selector: 'app-root',
-          templateUrl: './app.component.html',
-          styleUrls: ['./app.component.scss'],
-        })
-        export class AppComponent {
-          @ViewChild('input', { static: true }) input: ElementRef;
-          @ViewChild('datePicker', { static: true }) datePicker: MDBDatePickerComponent;
-          @ViewChild('timePicker', { static: true }) timePicker: ClockPickerComponent;
-        
-          public myDatePickerOptions: IMyOptions = {
-            // Your options
-          };
-          onDateChange = (event: { actualDateFormatted: string; }) => {
-            this.input.nativeElement.value = event.actualDateFormatted; // set value to input
-            this.datePicker.closeBtnClicked(); // close date picker
-            this.timePicker.openBtnClicked(); // open time picker
-          };
-        
-          onTimeChange = (event: string) => {
-            this.input.nativeElement.value = `${this.input.nativeElement.value}, ${event}`; // set value to input
-          };
-        }
-      </code>
-    </mdbsnippet>
-  </section>
-  <!--Section: Code-->
-
-</section>
-<!--/Section: -->
